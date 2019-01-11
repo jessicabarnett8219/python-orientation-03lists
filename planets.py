@@ -16,50 +16,28 @@ del(planet_list[6])
 
 voyages = [("spacecraft1", "Saturn", "Earth"), ("spacecraft2", "Venus", "Mars", "Mercury"), ("spacecraft3", "Venus", "Jupiter"), ("spacecraft4", "Jupiter")]
 
-def makeSpacecraftList(planets, voyage_list):
-  spacecraft_list = []
+def makeSpacecraftDict(planets, voyage_list):
+  """[Function to make key value pairs with the planet as the key and a list of satellites that visited the planet as the value]
+
+  Arguments:
+    planets {[list]} -- [list of planets]
+    voyage_list {[list]} -- [list of tupples with the first value being the satelite and the rest of the values being the planets it visited]
+
+  Returns:
+    [dictionary] -- [planets and satellites visited key/value pairs]
+  """
+
+  spacecraft_dict = dict()
   for planet in planets:
     for voyage in voyage_list:
       if planet in voyage:
-        spacecraft_list.append((planet, voyage[0]))
-        continue
-  return spacecraft_list
+        try:
+          spacecraft_dict[planet].append(voyage[0])
+        except KeyError:
+          spacecraft_dict[planet] = list()
+          spacecraft_dict[planet].append(voyage[0])
 
-spacecraft_list = makeSpacecraftList(planet_list, voyages)
+  return spacecraft_dict
 
-mercury_voyages = []
-venus_voyages = []
-jupiter_voyages = []
-saturn_voyages = []
-earth_voyages = []
-mars_voyages = []
-
-for pair in spacecraft_list:
-  if pair[0] == "Mercury":
-    mercury_voyages.append(pair[1])
-  elif pair[0] == "Venus":
-    venus_voyages.append(pair[1])
-  elif pair[0] == "Jupiter":
-    jupiter_voyages.append(pair[1])
-  elif pair[0] == "Saturn":
-    saturn_voyages.append(pair[1])
-  elif pair[0] == "Earth":
-    earth_voyages.append(pair[1])
-  elif pair[0] == "Mars":
-    mars_voyages.append(pair[1])
-
-def formatSpacecraftList(planet, voyage_list):
-  sentence = ""
-  sentence += planet
-  sentence += ":"
-  for spacecraft in voyage_list:
-    sentence += spacecraft
-    sentence += " "
-  return sentence
-
-print(formatSpacecraftList("Venus", venus_voyages))
-print(formatSpacecraftList("Mars", mars_voyages))
-print(formatSpacecraftList("Mercury", mercury_voyages))
-print(formatSpacecraftList("Earth", earth_voyages))
-print(formatSpacecraftList("Jupiter", venus_voyages))
-print(formatSpacecraftList("Saturn", saturn_voyages))
+spacecraft_dict = makeSpacecraftDict(planet_list, voyages)
+print(spacecraft_dict)
